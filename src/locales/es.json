@@ -1,6 +1,7 @@
 {
   "login": {
     "title": "Iniciar sesión",
+    "username": "Usuario",
     "email": "Correo electrónico",
     "password": "Contraseña",
     "loginButton": "Entrar",
