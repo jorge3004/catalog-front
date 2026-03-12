@@ -52,10 +52,15 @@ const defaultTheme = createTheme({
 const altTheme = createTheme({
     palette: {
         mode: 'dark',
-        primary: { main: '#22223b' },
-        secondary: { main: '#9a8c98' },
-        background: { default: '#2a2a40', paper: '#22223b' },
-        text: { primary: '#fff', secondary: '#c9ada7' },
+        primary: { main: '#1e2a36', contrastText: '#fff' }, // Azul Merisa
+        secondary: { main: '#223047', contrastText: '#fff' }, // Azul acento Merisa
+        background: { default: '#181a20', paper: '#23263a' },
+        text: { primary: '#fff', secondary: '#b0b0b0' },
+        divider: '#2b3a4a',
+        info: { main: '#2b3a4a', contrastText: '#fff' },
+        error: { main: '#ef5350' },
+        warning: { main: '#fbc02d' },
+        success: { main: '#66bb6a' },
     },
     typography: {
         fontFamily: 'Montserrat, Arial, sans-serif',
@@ -63,9 +68,22 @@ const altTheme = createTheme({
     shape: {
         borderRadius: 12,
     },
+    components: {
+        MuiButton: {
+            styleOverrides: {
+                containedPrimary: {
+                    backgroundColor: '#1e2a36',
+                    color: '#fff',
+                    '&:hover': {
+                        backgroundColor: '#223047',
+                    },
+                },
+            },
+        },
+    },
 });
 
 export const themes = {
-    default: defaultTheme,
-    alt: altTheme,
+    merisa: defaultTheme,
+    merisaDark: altTheme,
 };

@@ -1,19 +1,24 @@
 import React from 'react';
-import {
-  TextField,
-  Button,
-  Box,
-  Typography,
-  Link as MuiLink,
-} from '@mui/material';
-import { Link } from 'react-router-dom';
+import { TextField, Button, Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import useLogin from '../../hooks/useLogin';
+import LoginLinks from './LoginLinks';
 
 const LoginForm = () => {
   const { t } = useTranslation();
+  const {
+    username,
+    setUsername,
+    password,
+    setPassword,
+    error,
+    loading,
+    handleSubmit,
+  } = useLogin();
   return (
     <Box
       component="form"
+      onSubmit={handleSubmit}
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -34,26 +39,47 @@ const LoginForm = () => {
       <Typography variant="h5" align="center">
         {t('login.title')}
       </Typography>
+      {error && (
+        <Typography color="error" align="center">
+          {error}
+        </Typography>
+      )}
       <TextField
         label={t('login.username', 'Usuario')}
         variant="outlined"
         fullWidth
         required
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
         InputLabelProps={{
           sx: (theme) => ({
-            color: theme.palette.text.primary,
+            color:
+              theme.palette.mode === 'dark'
+                ? '#fff'
+                : theme.palette.text.primary,
             background: 'transparent',
             zIndex: 1,
             '&.Mui-focused': {
-              color: theme.palette.secondary.main,
+              color:
+                theme.palette.mode === 'dark'
+                  ? '#90caf9'
+                  : theme.palette.secondary.main,
             },
             '&.MuiInputLabel-shrink': {
-              color: theme.palette.secondary.main,
+              color:
+                theme.palette.mode === 'dark'
+                  ? '#90caf9'
+                  : theme.palette.secondary.main,
             },
           }),
         }}
         inputProps={{
-          sx: (theme) => ({ color: theme.palette.text.primary }),
+          sx: (theme) => ({
+            color:
+              theme.palette.mode === 'dark'
+                ? '#fff'
+                : theme.palette.text.primary,
+          }),
         }}
       />
       <TextField
@@ -62,52 +88,49 @@ const LoginForm = () => {
         variant="outlined"
         fullWidth
         required
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
         InputLabelProps={{
           sx: (theme) => ({
-            color: theme.palette.text.primary,
+            color:
+              theme.palette.mode === 'dark'
+                ? '#fff'
+                : theme.palette.text.primary,
             background: 'transparent',
             zIndex: 1,
             '&.Mui-focused': {
-              color: theme.palette.secondary.main,
+              color:
+                theme.palette.mode === 'dark'
+                  ? '#90caf9'
+                  : theme.palette.secondary.main,
             },
             '&.MuiInputLabel-shrink': {
-              color: theme.palette.secondary.main,
+              color:
+                theme.palette.mode === 'dark'
+                  ? '#90caf9'
+                  : theme.palette.secondary.main,
             },
           }),
         }}
         inputProps={{
-          sx: (theme) => ({ color: theme.palette.text.primary }),
+          sx: (theme) => ({
+            color:
+              theme.palette.mode === 'dark'
+                ? '#fff'
+                : theme.palette.text.primary,
+          }),
         }}
       />
-      <Button variant="contained" color="primary" fullWidth>
-        {t('login.loginButton')}
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        fullWidth
+        disabled={loading}
+      >
+        {loading ? t('login.loading', 'Cargando...') : t('login.loginButton')}
       </Button>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <MuiLink
-          component={Link}
-          to="/forgot"
-          sx={(theme) => ({
-            color: theme.palette.secondary.main,
-            fontWeight: 500,
-            textDecoration: 'none',
-            '&:hover': { textDecoration: 'underline' },
-          })}
-        >
-          {t('login.forgot')}
-        </MuiLink>
-        <MuiLink
-          component={Link}
-          to="/register"
-          sx={(theme) => ({
-            color: theme.palette.secondary.main,
-            fontWeight: 500,
-            textDecoration: 'none',
-            '&:hover': { textDecoration: 'underline' },
-          })}
-        >
-          {t('login.register')}
-        </MuiLink>
-      </Box>
+      <LoginLinks />
     </Box>
   );
 };

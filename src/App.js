@@ -1,16 +1,37 @@
-
 import React, { useState, useEffect } from 'react';
-import { ThemeProvider, CssBaseline, Button, Box } from '@mui/material';
-import { BrowserRouter } from 'react-router-dom';
 
+import { ThemeProvider, CssBaseline } from '@mui/material';
+import { BrowserRouter } from 'react-router-dom';
 import { themes } from './theme';
-import AppRoutes from './routes/AppRoutes';
+import AppWithAuthLoader from './AppWithAuthLoader';
+import { AuthProvider } from './context/AuthContext';
 import './i18n';
 import { useTranslation } from 'react-i18next';
+import useLastRouteSync from './hooks/useLastRouteSync';
+import './global.css';
 
+
+function LastRouteSyncWrapper({ children }) {
+    useLastRouteSync();
+    return children;
+}
 
 function App() {
-    const [themeName, setThemeName] = useState('default');
+    // Detectar tema preferido: localStorage ('light'|'dark') > navegador > default
+    function mapTheme(theme) {
+        if (theme === 'dark') return 'merisaDark';
+        return 'merisa'; // default y 'light'
+    }
+
+    let storedTheme = localStorage.getItem('theme'); // 'light' | 'dark' | null
+    let initialTheme;
+    if (storedTheme === 'light' || storedTheme === 'dark') {
+        initialTheme = mapTheme(storedTheme);
+    } else {
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        initialTheme = prefersDark ? 'merisaDark' : 'merisa';
+    }
+    const [themeName, setThemeName] = useState(initialTheme);
     const { i18n } = useTranslation();
 
     useEffect(() => {
@@ -21,21 +42,18 @@ function App() {
         }
     }, [i18n.language]);
 
-    const handleToggleTheme = () => {
-        setThemeName((prev) => (prev === 'default' ? 'alt' : 'default'));
-    };
+
 
     return (
         <ThemeProvider theme={themes[themeName]}>
             <CssBaseline />
-            <BrowserRouter>
-                <Box sx={{ position: 'absolute', top: 16, right: 16 }}>
-                    <Button variant="contained" color="secondary" onClick={handleToggleTheme}>
-                        {themeName === 'default' ? 'Tema Alternativo' : 'Tema Merisa'}
-                    </Button>
-                </Box>
-                <AppRoutes />
-            </BrowserRouter>
+            <AuthProvider>
+                <BrowserRouter>
+                    <LastRouteSyncWrapper>
+                        <AppWithAuthLoader />
+                    </LastRouteSyncWrapper>
+                </BrowserRouter>
+            </AuthProvider>
         </ThemeProvider>
     );
 }

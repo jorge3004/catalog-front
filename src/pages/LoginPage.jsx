@@ -1,10 +1,17 @@
 import React from 'react';
 import LoginForm from '../components/login/LoginForm';
-import LanguageSelector from '../components/LanguageSelector';
+import { Box, Alert } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 
-import { Box } from '@mui/material';
-
-const LoginPage = () => {
+const Login = () => {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const sessionParam = params.get('session');
+  let sessionMsg = '';
+  if (sessionParam === 'invalid') {
+    sessionMsg = 'Your session has expired or is invalid. Please log in again.';
+  }
+  // Si quieres mostrar un mensaje especial para no-token, puedes agregarlo aquí
   return (
     <Box
       sx={{
@@ -17,10 +24,14 @@ const LoginPage = () => {
         bgcolor: 'background.default',
       }}
     >
-      <LanguageSelector />
+      {sessionMsg && (
+        <Alert severity="warning" sx={{ mb: 2, maxWidth: 400 }}>
+          {sessionMsg}
+        </Alert>
+      )}
       <LoginForm />
     </Box>
   );
 };
 
-export default LoginPage;
+export default Login;

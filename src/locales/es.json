@@ -1,4 +1,14 @@
 {
+  "register": {
+    "successMessage": "¡Registro exitoso! Tu cuenta ha sido creada, pero requiere aprobación de un administrador antes de poder iniciar sesión. Por favor, contacta a un administrador para que apruebe tu cuenta. Una vez aprobada, podrás usar tus credenciales para acceder al sistema.",
+    "preferredName": "Nombre preferido",
+    "lastName": "Apellido paterno",
+    "password": "Contraseña",
+    "loading": "Registrando...",
+    "button": "Registrarse",
+    "backToLogin": "Volver al login",
+    "title": "Registro"
+  },
   "login": {
     "title": "Iniciar sesión",
     "username": "Usuario",
@@ -6,6 +16,55 @@
     "password": "Contraseña",
     "loginButton": "Entrar",
     "forgot": "¿Olvidaste tu contraseña?",
-    "register": "Registrarse"
+    "register": "Registrarse",
+    "invalidCredentials": "Credenciales incorrectas",
+    "error": "Error al iniciar sesión",
+    "loading": "Cargando..."
+  },
+  "dashboard": {
+    "welcome": "Bienvenido al Dashboard",
+    "instructions": "Selecciona una opción del menú para comenzar."
+  },
+  "sidebar": {
+    "users": "Usuarios",
+    "catalog": "Catálogo PDF"
+  },
+  "userMenu": {
+    "profile": "Perfil",
+    "logout": "Cerrar sesión"
+  },
+  "appbar": {
+    "title": "Catálogo"
+  },
+  "users": {
+    "title": "Gestor de Usuarios",
+    "header": {
+      "user": "Usuario",
+      "role": "Rol",
+      "actions": "Acciones"
+    }
+  },
+  "profile": {
+    "title": "Perfil de Usuario",
+    "language": "Idioma de la interfaz",
+    "changePassword": "Cambiar contraseña",
+    "currentPassword": "Contraseña actual",
+    "newPassword": "Nueva contraseña",
+    "confirmPassword": "Confirmar nueva contraseña",
+    "savePassword": "Guardar contraseña",
+    "passwordShort": "La nueva contraseña debe tener al menos 6 caracteres.",
+    "passwordMismatch": "Las contraseñas no coinciden.",
+    "passwordChanged": "Contraseña actualizada correctamente.",
+    "passwordChangeError": "Error al cambiar la contraseña."
+  }
+  ,
+  "app": {
+    "connectionError": "No se pudo conectar con el servidor. Por favor, revisa tu conexión o contacta al administrador."
+  },
+  "navbar": {
+    "catalog": "Catálogo",
+    "users": "Gestor de Usuarios",
+    "catalogManager": "Gestor de Catálogos PDF",
+    "dashboard": "Panel de Control"
   }
 }

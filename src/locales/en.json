@@ -1,4 +1,14 @@
 {
+  "register": {
+    "successMessage": "Registration successful! Your account has been created but requires approval from an administrator before you can log in. Please contact an administrator to approve your account. Once approved, you can use your credentials to access the system.",
+    "preferredName": "Preferred Name",
+    "lastName": "Last Name",
+    "password": "Password",
+    "loading": "Registering...",
+    "button": "Register",
+    "backToLogin": "Back to login",
+    "title": "Register"
+  },
   "login": {
     "title": "Login",
     "username": "Username",
@@ -6,6 +16,51 @@
     "password": "Password",
     "loginButton": "Login",
     "forgot": "Forgot password?",
-    "register": "Register"
+    "register": "Register",
+    "invalidCredentials": "Incorrect credentials",
+    "error": "Error logging in",
+    "loading": "Loading..."
+  },
+  "dashboard": {
+    "welcome": "Welcome to the Dashboard",
+    "instructions": "Select an option from the menu to get started."
+  },
+  "sidebar": {
+    "users": "Users",
+    "catalog": "PDF Catalog"
+  },
+  "userMenu": {
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "appbar": {
+    "title": "Catalog"
+  },
+  "users": {
+    "title": "User Manager",
+    "header": {
+      "user": "User",
+      "role": "Role",
+      "actions": "Actions"
+    }
+  },
+  "profile": {
+    "title": "User Profile",
+    "language": "Interface language",
+    "changePassword": "Change password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm new password",
+    "savePassword": "Save password",
+    "passwordShort": "The new password must be at least 6 characters.",
+    "passwordMismatch": "Passwords do not match.",
+    "passwordChanged": "Password updated successfully.",
+    "passwordChangeError": "Error changing password."
+  },
+  "navbar": {
+    "catalog": "Catalog",
+    "users": "User Manager",
+    "catalogManager": "PDF Catalog Manager",
+    "dashboard": "Dashboard"
   }
 }
