@@ -7,8 +7,9 @@ import Tooltip from '@mui/material/Tooltip';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { Worker, Viewer } from '@react-pdf-viewer/core';
+import { Worker } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
+import PDFPreviewWithZoom from '../../components/dashboard/catalogManager/PDFPreviewWithZoom';
 
 import {
   getCatalogs,
@@ -261,22 +262,15 @@ const CatalogManager = () => {
         fullWidth
       >
         <DialogTitle sx={{ pr: 1, position: 'relative', minHeight: 48, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span>Vista previa PDF</span>
-          {previewUrl && (
-            <Tooltip title="Ver PDF en S3 (nueva pestaña)" arrow>
-              <IconButton component="a" href={previewUrl} target="_blank" rel="noopener noreferrer" size="small" sx={{ color: 'grey.600', ml: 1 }}>
-                <VisibilityIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          )}
+          <span>{
+            previewUrl
+              ? (catalogs.find(cat => cat.url === previewUrl)?.name || 'PDF')
+              : 'PDF'
+          }</span>
         </DialogTitle>
-        <DialogContent>
+        <DialogContent sx={{ position: 'relative', p: 0 }}>
           {previewUrl ? (
-            <Worker
-              workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
-            >
-              <Viewer fileUrl={previewUrl} />
-            </Worker>
+            <PDFPreviewWithZoom fileUrl={previewUrl} onClose={handleClosePreview} />
           ) : (
             <Typography>No se pudo cargar el PDF.</Typography>
           )}

@@ -5,21 +5,57 @@ import { zoomPlugin } from '@react-pdf-viewer/zoom';
 import '@react-pdf-viewer/zoom/lib/styles/index.css';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 
-const PDFPreviewWithZoom = ({ fileUrl }) => {
+
+// import { useState } from 'react';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import Tooltip from '@mui/material/Tooltip';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+
+const PDFPreviewWithZoom = ({ fileUrl, onClose }) => {
   const zoomPluginInstance = zoomPlugin();
   const { ZoomInButton, ZoomOutButton, ZoomPopover } = zoomPluginInstance;
 
   return (
-    <>
-      <div style={{ marginBottom: 8, display: 'flex', gap: 8, alignItems: 'center', justifyContent: 'flex-end' }}>
-        <ZoomOutButton />
-        <ZoomPopover />
-        <ZoomInButton />
+    <div style={{ position: 'relative', width: '100%', minHeight: '80vh', background: '#f8f8f8' }}>
+      {/* Botón X para cerrar en la esquina superior derecha, siempre visible */}
+      <IconButton
+        aria-label="close"
+        onClick={onClose}
+        size="small"
+        sx={{
+          position: 'fixed',
+          right: 24,
+          top: 24,
+          zIndex: 1300,
+          color: 'grey.600',
+          background: 'white',
+          boxShadow: 1,
+          border: '1px solid #ddd',
+        }}
+      >
+        <CloseIcon fontSize="medium" />
+      </IconButton>
+      {/* Barra de controles de zoom y descarga, separados visualmente */}
+      <div style={{ display: 'flex', alignItems: 'center', padding: 12, paddingRight: 56 }}>
+        <div style={{ display: 'flex', gap: 12 }}>
+          <ZoomOutButton />
+          <ZoomPopover />
+          <ZoomInButton />
+        </div>
+        <div style={{ flex: 1 }} />
+        <Tooltip title="Descargar PDF" arrow>
+          <IconButton component="a" href={fileUrl} target="_blank" rel="noopener noreferrer" size="small" sx={{ color: 'grey.600', ml: 1 }}>
+            <CloudDownloadIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
       </div>
-      <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
-        <Viewer fileUrl={fileUrl} plugins={[zoomPluginInstance]} />
-      </Worker>
-    </>
+      <div style={{ marginTop: 8, height: 'calc(80vh - 56px)', overflow: 'auto' }}>
+        <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
+          <Viewer fileUrl={fileUrl} plugins={[zoomPluginInstance]} />
+        </Worker>
+      </div>
+    </div>
   );
 };
 
