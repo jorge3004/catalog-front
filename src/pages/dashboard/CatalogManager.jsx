@@ -23,6 +23,13 @@ import {
   CircularProgress,
   IconButton,
   useMediaQuery,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Paper,
 } from '@mui/material';
 import CatalogCardList from '../../components/dashboard/catalogManager/CatalogCardList';
 import { useTheme } from '@mui/material/styles';
