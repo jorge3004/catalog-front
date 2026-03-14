@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import ProfileModal from './navbar/ProfileModal';
+import React, { useState, useEffect } from 'react';
+import ProfileModal from './profileModal/ProfileModal';
 import { useTranslation } from 'react-i18next';
 import {
   Menu,
@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
+
 const UserMenu = ({
   user,
   anchorEl,
@@ -20,8 +21,10 @@ const UserMenu = ({
   initials,
   displayName,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [profileOpen, setProfileOpen] = useState(false);
+  // ...existing code...
+
   return (
     <Box sx={{ ml: 2, display: 'flex', alignItems: 'center' }}>
       <IconButton
@@ -77,10 +80,10 @@ const UserMenu = ({
             setProfileOpen(true);
           }}
         >
-          {t('userMenu.profile', 'Perfil')}
+          {t('userMenu.profile', { defaultValue: i18n.language === 'en' ? 'Profile' : 'Perfil' })}
         </MenuItem>
         <MenuItem onClick={handleLogout}>
-          {t('userMenu.logout', 'Cerrar sesión')}
+          {t('userMenu.logout', { defaultValue: i18n.language === 'en' ? 'Logout' : 'Cerrar sesión' })}
         </MenuItem>
       </Menu>
       <ProfileModal open={profileOpen} onClose={() => setProfileOpen(false)} />

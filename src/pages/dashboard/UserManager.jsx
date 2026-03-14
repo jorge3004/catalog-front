@@ -9,6 +9,7 @@ import UserTable from '../../components/dashboard/userManager/UserTable';
 import useUsers from '../../hooks/user/useUsers';
 import useApproveUser from '../../hooks/user/useApproveUser';
 import useEditRole from '../../hooks/user/useEditRole';
+import useDeactivateUser from '../../hooks/user/useDeactivateUser';
 
 const UserManager = () => {
   const token = localStorage.getItem('token');
@@ -25,6 +26,7 @@ const UserManager = () => {
     handleRoleChange,
     handleSaveRole,
   } = useEditRole(token, setUsers, setError);
+  const { deactivating, handleDeactivate } = useDeactivateUser(token, setUsers, setError);
 
   return (
     <Box sx={{ p: { xs: 1, sm: 2 } }}>
@@ -51,6 +53,8 @@ const UserManager = () => {
             onRoleChange={handleRoleChange}
             onApprove={handleApprove}
             onSaveRole={handleSaveRole}
+            onDelete={handleDeactivate}
+            deleting={deactivating}
           />
         )}
       </Box>

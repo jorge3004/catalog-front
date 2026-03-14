@@ -5,7 +5,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 
 const CatalogCard = ({ catalog, onPreview, onDownload, onDelete }) => {
   // Si tienes un thumbnail, úsalo aquí. Si no, usa un ícono por defecto.
-  const thumbnail = catalog.thumbnailUrl || null;
+  const thumbnail = catalog.thumbnail_url || null;
   // Nuevo tamaño
   const thumbWidth = 96;
   const thumbHeight = 135;
@@ -27,7 +27,7 @@ const CatalogCard = ({ catalog, onPreview, onDownload, onDelete }) => {
       <Box sx={{ width: thumbWidth, height: thumbHeight, mb: 1, mt: 1 }}>
         <Box
           sx={{ width: thumbWidth, height: thumbHeight, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-          onClick={() => onPreview(catalog.url)}
+          onClick={() => onPreview(catalog.id)}
           title="Vista previa PDF"
         >
           {thumbnail ? (

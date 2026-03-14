@@ -12,7 +12,8 @@ export default function useUsers(token) {
             setError('');
             try {
                 const data = await getUsers(token);
-                setUsers(data);
+                // Filtrar solo usuarios activos
+                setUsers(Array.isArray(data) ? data.filter(u => u.status === 'active' || u.status === 'pending') : []);
             } catch (err) {
                 setError(err.message);
             }

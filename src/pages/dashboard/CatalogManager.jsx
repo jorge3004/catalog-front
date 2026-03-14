@@ -12,172 +12,89 @@ import '@react-pdf-viewer/core/lib/styles/index.css';
 import PDFPreviewWithZoom from '../../components/dashboard/catalogManager/PDFPreviewWithZoom';
 
 import {
-  getCatalogs,
-  uploadCatalog,
-  deleteCatalog,
-  getOrCreateThumbnail,
+// Lógica de catálogos movida a useCatalogs
 } from '../../api/catalogApi';
 import {
   Box,
   Typography,
-  TextField,
   CircularProgress,
-  IconButton,
   useMediaQuery,
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Paper,
 } from '@mui/material';
+import useCatalogs from '../../hooks/catalog/useCatalogs';
 import CatalogCardList from '../../components/dashboard/catalogManager/CatalogCardList';
+import CatalogUploadForm from '../../components/dashboard/catalogManager/forms/CatalogUploadForm';
+import CatalogTableList from '../../components/dashboard/catalogManager/table/CatalogTableList';
 import { useTheme } from '@mui/material/styles';
+
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 
 
 const CatalogManager = () => {
-  // Plugin de zoom para PDF Viewer (debe ir dentro del componente)
-  // const zoomPluginInstance = zoomPlugin();
-  // const { ZoomInButton, ZoomOutButton, ZoomPopover } = zoomPluginInstance;
-
-  const [catalogs, setCatalogs] = useState([]);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-   const [loading, setLoading] = useState(true);
-   const [error, setError] = useState('');
-   const [file, setFile] = useState(null);
-   const [name, setName] = useState('');
-   const [uploading, setUploading] = useState(false);
-   const [previewOpen, setPreviewOpen] = useState(false);
-   const [previewUrl, setPreviewUrl] = useState('');
-  const token = localStorage.getItem('token');
-
-
-  const handlePreview = (url) => {
-    setPreviewUrl(url);
-    setPreviewOpen(true);
-  };
-
   const handleClosePreview = () => {
     setPreviewOpen(false);
     setPreviewUrl('');
   };
 
-  useEffect(() => {
-    fetchCatalogs();
-  }, []);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [file, setFile] = useState(null);
+  const [name, setName] = useState('');
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState('');
+  const token = localStorage.getItem('token');
 
-  // DEBUG: Ver el contenido de catalogs en consola
-  useEffect(() => {
-    if (catalogs && catalogs.length) {
-      console.log('Catalogs:', catalogs);
-    }
-  }, [catalogs]);
+  // Custom hook para lógica de catálogos
+  const {
+    catalogs,
+    loading,
+    error,
+    uploading,
+    handleUpload: hookHandleUpload,
+    handleDelete: hookHandleDelete,
+    setError,
+  } = useCatalogs(token);
 
-  const fetchCatalogs = async () => {
-    setLoading(true);
-    setError('');
-    try {
-      const data = await getCatalogs(token);
-      setCatalogs(data);
-    } catch (err) {
-      setError(err.message);
+  // Asegura que la vista previa siempre use la URL real del PDF
+  const handlePreview = (urlOrId) => {
+    let url = urlOrId;
+    if (typeof urlOrId === 'number') {
+      const cat = catalogs.find(c => c.id === urlOrId);
+      if (cat && cat.url) url = cat.url;
     }
-    setLoading(false);
+    setPreviewUrl(url);
+    setPreviewOpen(true);
   };
 
-  // Hook para cargar thumbnails en modo móvil
-  useEffect(() => {
-    if (!isMobile || !catalogs.length) return;
-    const token = localStorage.getItem('token');
-    const updateThumbnails = async () => {
-      const updated = await Promise.all(
-        catalogs.map(async (cat) => {
-          if (!cat.thumbnailUrl) {
-            try {
-              const url = await getOrCreateThumbnail(cat.id, token);
-              return { ...cat, thumbnailUrl: url };
-            } catch {
-              return cat;
-            }
-          }
-          return cat;
-        })
-      );
-      setCatalogs(updated);
-    };
-    updateThumbnails();
-    // eslint-disable-next-line
-  }, [isMobile, catalogs.length]);
-
-  const handleUpload = async (e) => {
-    e.preventDefault();
-    if (!file) return;
-    setUploading(true);
-    setError('');
-    try {
-      await uploadCatalog({ file, name, token });
-      setFile(null);
-      setName('');
-      await fetchCatalogs();
-    } catch (err) {
-      setError(err.message);
-    }
-    setUploading(false);
+  // Wrapper para el form
+  const handleUpload = (e) => {
+    hookHandleUpload(e, name, file);
+    setFile(null);
+    setName('');
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('¿Eliminar este catálogo?')) return;
-    setError('');
-    try {
-      await deleteCatalog({ id, token });
-      await fetchCatalogs();
-    } catch (err) {
-      setError(err.message);
+  // Wrapper para el delete con confirmación
+  const handleDelete = (id) => {
+    if (window.confirm('¿Eliminar este catálogo?')) {
+      hookHandleDelete(id);
     }
   };
 
   return (
     <Box sx={{ p: { xs: 1, sm: 2 } }}>
-      {/* Legend moved to NavBar */}
       {error && <Typography color="error">{error}</Typography>}
-      <Box
-        component="form"
-        onSubmit={handleUpload}
-        sx={{
-          mb: 3,
-          display: 'flex',
-          gap: 2,
-          alignItems: { xs: 'stretch', sm: 'center' },
-          flexDirection: { xs: 'column', sm: 'row' },
-        }}
-      >
-        <TextField
-          label="Nombre del catálogo"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          size="small"
-          fullWidth={isMobile}
-        />
-        <input
-          type="file"
-          accept="application/pdf"
-          onChange={(e) => setFile(e.target.files[0])}
-          style={{ display: 'inline-block' }}
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          disabled={uploading || !file}
-          sx={{ minWidth: 100 }}
-        >
-          {uploading ? 'Subiendo...' : 'Subir PDF'}
-        </Button>
-      </Box>
+      <CatalogUploadForm
+        name={name}
+        setName={setName}
+        file={file}
+        setFile={setFile}
+        uploading={uploading}
+        error={error}
+        handleUpload={handleUpload}
+        isMobile={isMobile}
+      />
       {loading ? (
         <Box
           sx={{
@@ -198,61 +115,11 @@ const CatalogManager = () => {
             onDelete={handleDelete}
           />
         ) : (
-          <TableContainer
-            component={Paper}
-            sx={{
-              boxShadow: 3,
-              width: '100%',
-              maxWidth: '100%',
-              overflowX: 'auto',
-            }}
-          >
-            <Table
-              size="medium"
-              sx={{ minWidth: 600, width: '100%', maxWidth: '100%' }}
-            >
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ minWidth: 40 }}>ID</TableCell>
-                  <TableCell sx={{ minWidth: 120, p: 1, textAlign: 'center', verticalAlign: 'middle' }}>
-                    <Box sx={{ width: '100%' }}>Nombre</Box>
-                  </TableCell>
-                  <TableCell sx={{ minWidth: 100 }}>Subido por</TableCell>
-                  <TableCell sx={{ minWidth: 120 }}>Fecha</TableCell>
-                  <TableCell align="center" sx={{ minWidth: 120, width: '200px !important', maxWidth: '200px !important', p: 1, textAlign: 'center', verticalAlign: 'middle' }}>
-                    Acciones
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {catalogs.map((cat) => (
-                  <TableRow key={cat.id}>
-                    <TableCell>{cat.id}</TableCell>
-                    <TableCell sx={{ wordBreak: 'break-word', maxWidth: 120 }}>
-                      {cat.name}
-                    </TableCell>
-                    <TableCell sx={{ wordBreak: 'break-word', maxWidth: 100 }}>
-                      {cat.uploaded_by}
-                    </TableCell>
-                    <TableCell sx={{ wordBreak: 'break-word', maxWidth: 120 }}>
-                      {new Date(cat.created_at).toLocaleString()}
-                    </TableCell>
-                    <TableCell align="center" sx={{ p: 1, width: '200px !important', maxWidth: '200px !important', textAlign: 'center', verticalAlign: 'middle' }}>
-                      <IconButton onClick={() => handlePreview(cat.url)} title="Vista previa PDF" size="medium" sx={{ m: 0.5 }}>
-                        <VisibilityIcon fontSize="medium" />
-                      </IconButton>
-                      <IconButton component="a" href={cat.url} target="_blank" rel="noopener noreferrer" title="Descargar PDF" size="medium" sx={{ m: 0.5 }}>
-                        <CloudDownloadIcon fontSize="medium" />
-                      </IconButton>
-                      <IconButton color="error" onClick={() => handleDelete(cat.id)} title="Eliminar" size="medium" sx={{ m: 0.5 }}>
-                        <DeleteIcon fontSize="medium" />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <CatalogTableList
+            catalogs={catalogs}
+            handlePreview={handlePreview}
+            handleDelete={handleDelete}
+          />
         )
       )}
       <Dialog

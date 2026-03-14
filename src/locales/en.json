@@ -42,6 +42,10 @@
       "user": "User",
       "role": "Role",
       "actions": "Actions"
+    },
+    "roles": {
+      "admin": "Admin",
+      "user": "User"
     }
   },
   "profile": {
@@ -62,5 +66,8 @@
     "users": "User Manager",
     "catalogManager": "PDF Catalog Manager",
     "dashboard": "Dashboard"
-  }
+  },
+  "delete": "Delete",
+  "deleteConfirmTitle": "Delete user?",
+  "cancel": "Cancel"
 }

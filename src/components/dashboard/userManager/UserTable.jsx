@@ -2,7 +2,7 @@ import React from 'react';
 import UserManagerHeader from './UserManagerHeader';
 import UserRow from './UserRow';
 import UserCard from './UserCard';
-import { Table, TableBody, useMediaQuery } from '@mui/material';
+import { Table, TableBody, useMediaQuery, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 const UserTable = ({
@@ -13,13 +13,23 @@ const UserTable = ({
   onRoleChange,
   onApprove,
   onSaveRole,
+  onDelete,
+  deleting,
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   if (isMobile) {
     return (
-      <div>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr 1fr', sm: '1fr 1fr' },
+          gap: 1.5,
+          width: '100%',
+          mt: 1,
+        }}
+      >
         {users.map((user) => (
           <UserCard
             key={user.id}
@@ -30,9 +40,11 @@ const UserTable = ({
             onRoleChange={onRoleChange}
             onApprove={onApprove}
             onSaveRole={onSaveRole}
+            onDelete={onDelete}
+            deleting={deleting?.[user.id]}
           />
         ))}
-      </div>
+      </Box>
     );
   }
 
@@ -50,6 +62,8 @@ const UserTable = ({
             onRoleChange={onRoleChange}
             onApprove={onApprove}
             onSaveRole={onSaveRole}
+            onDelete={onDelete}
+            deleting={deleting?.[user.id]}
           />
         ))}
       </TableBody>

@@ -42,6 +42,10 @@
       "user": "Usuario",
       "role": "Rol",
       "actions": "Acciones"
+    },
+    "roles": {
+      "admin": "Administrador",
+      "user": "Usuario"
     }
   },
   "profile": {
@@ -56,8 +60,7 @@
     "passwordMismatch": "Las contraseñas no coinciden.",
     "passwordChanged": "Contraseña actualizada correctamente.",
     "passwordChangeError": "Error al cambiar la contraseña."
-  }
-  ,
+  },
   "app": {
     "connectionError": "No se pudo conectar con el servidor. Por favor, revisa tu conexión o contacta al administrador."
   },
@@ -66,5 +69,8 @@
     "users": "Gestor de Usuarios",
     "catalogManager": "Gestor de Catálogos PDF",
     "dashboard": "Panel de Control"
-  }
+  },
+  "delete": "Eliminar",
+  "deleteConfirmTitle": "¿Eliminar usuario?",
+  "cancel": "Cancelar"
 }

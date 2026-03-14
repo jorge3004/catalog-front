@@ -29,6 +29,36 @@ export async function updateUserRole({ userId, role, token }) {
     return data;
 }
 
+// Eliminar usuario (requiere token y ser admin)
+export async function deleteUser({ userId, token }) {
+    const res = await fetch(`${API_URL}/users/${userId}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.success) {
+        throw new Error(data.message || 'Error al eliminar usuario');
+    }
+    return data;
+}
+
+// Inactivar usuario (soft delete)
+export async function deactivateUser({ userId, token }) {
+    const res = await fetch(`${API_URL}/users/${userId}/status`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status: 'inactive' }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.success) {
+        throw new Error(data.message || 'Error al inactivar usuario');
+    }
+    return data;
+}
+
 const API_URL = process.env.REACT_APP_API_URL || '/api';
 
 export async function registerUser({ preferred_name, last_name, password }) {
