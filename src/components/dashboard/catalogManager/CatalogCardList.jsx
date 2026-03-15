@@ -2,7 +2,7 @@ import React from 'react';
 import CatalogCard from './CatalogCard';
 import { Box } from '@mui/material';
 
-const CatalogCardList = ({ catalogs, onPreview, onDownload, onDelete }) => (
+const CatalogCardList = ({ catalogs, onPreview, onDownload, onDelete, userRole }) => (
   <Box sx={{
     display: 'grid',
     gridTemplateColumns: { xs: '1fr 1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr' },
@@ -17,6 +17,7 @@ const CatalogCardList = ({ catalogs, onPreview, onDownload, onDelete }) => (
         onPreview={onPreview}
         onDownload={onDownload}
         onDelete={onDelete}
+        userRole={userRole}
       />
     ))}
   </Box>

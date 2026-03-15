@@ -21,6 +21,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import useCatalogs from '../../hooks/catalog/useCatalogs';
+import { useAuth } from '../../context/AuthContext';
 import CatalogCardList from '../../components/dashboard/catalogManager/CatalogCardList';
 import CatalogUploadForm from '../../components/dashboard/catalogManager/forms/CatalogUploadForm';
 import CatalogTableList from '../../components/dashboard/catalogManager/table/CatalogTableList';
@@ -33,6 +34,8 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 
 const CatalogManager = () => {
+  const { user } = useAuth();
+
   const handleClosePreview = () => {
     setPreviewOpen(false);
     setPreviewUrl('');
@@ -85,16 +88,18 @@ const CatalogManager = () => {
   return (
     <Box sx={{ p: { xs: 1, sm: 2 } }}>
       {error && <Typography color="error">{error}</Typography>}
-      <CatalogUploadForm
-        name={name}
-        setName={setName}
-        file={file}
-        setFile={setFile}
-        uploading={uploading}
-        error={error}
-        handleUpload={handleUpload}
-        isMobile={isMobile}
-      />
+      {user?.role === 'admin' && (
+        <CatalogUploadForm
+          name={name}
+          setName={setName}
+          file={file}
+          setFile={setFile}
+          uploading={uploading}
+          error={error}
+          handleUpload={handleUpload}
+          isMobile={isMobile}
+        />
+      )}
       {loading ? (
         <Box
           sx={{
@@ -113,12 +118,14 @@ const CatalogManager = () => {
             onPreview={handlePreview}
             onDownload={() => {}}
             onDelete={handleDelete}
+            userRole={user?.role}
           />
         ) : (
           <CatalogTableList
             catalogs={catalogs}
             handlePreview={handlePreview}
             handleDelete={handleDelete}
+            userRole={user?.role}
           />
         )
       )}

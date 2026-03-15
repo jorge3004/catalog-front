@@ -2,6 +2,7 @@ import React from 'react';
 import UserManagerHeader from './UserManagerHeader';
 import UserRow from './UserRow';
 import UserCard from './UserCard';
+import ApproveIconButton from './ApproveIconButton';
 import { Table, TableBody, useMediaQuery, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
@@ -41,7 +42,8 @@ const UserTable = ({
             onApprove={onApprove}
             onSaveRole={onSaveRole}
             onDelete={onDelete}
-            deleting={deleting?.[user.id]}
+            deleting={deleting[user.id]}
+            ApproveButtonComponent={ApproveIconButton}
           />
         ))}
       </Box>

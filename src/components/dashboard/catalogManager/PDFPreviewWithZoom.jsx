@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAuth } from '../../../context/AuthContext';
 import { Worker, Viewer } from '@react-pdf-viewer/core';
 // importación de zoomPlugin y estilos
 import { zoomPlugin } from '@react-pdf-viewer/zoom';
@@ -13,6 +14,7 @@ import Tooltip from '@mui/material/Tooltip';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
 const PDFPreviewWithZoom = ({ fileUrl, onClose }) => {
+  const { user } = useAuth();
   const zoomPluginInstance = zoomPlugin();
   const { ZoomInButton, ZoomOutButton, ZoomPopover } = zoomPluginInstance;
 
@@ -37,18 +39,26 @@ const PDFPreviewWithZoom = ({ fileUrl, onClose }) => {
         <CloseIcon fontSize="medium" />
       </IconButton>
       {/* Barra de controles de zoom y descarga, separados visualmente */}
-      <div style={{ display: 'flex', alignItems: 'center', padding: 12, paddingRight: 56 }}>
+      <div
+        style={
+          user?.role === 'admin'
+            ? { display: 'flex', alignItems: 'center', padding: 12, paddingRight: 56 }
+            : { display: 'flex', alignItems: 'center', padding: 12, justifyContent: 'center' }
+        }
+      >
         <div style={{ display: 'flex', gap: 12 }}>
           <ZoomOutButton />
           <ZoomPopover />
           <ZoomInButton />
         </div>
-        <div style={{ flex: 1 }} />
-        <Tooltip title="Descargar PDF" arrow>
-          <IconButton component="a" href={fileUrl} target="_blank" rel="noopener noreferrer" size="small" sx={{ color: 'grey.600', ml: 1 }}>
-            <CloudDownloadIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
+        {user?.role === 'admin' && <div style={{ flex: 1 }} />}
+        {user?.role === 'admin' && (
+          <Tooltip title="Descargar PDF" arrow>
+            <IconButton component="a" href={fileUrl} target="_blank" rel="noopener noreferrer" size="small" sx={{ color: 'grey.600', ml: 1 }}>
+              <CloudDownloadIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        )}
       </div>
       <div style={{ marginTop: 8, height: 'calc(80vh - 56px)', overflow: 'auto' }}>
         <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">

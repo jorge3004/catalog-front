@@ -4,6 +4,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import RoleSelect from './RoleSelect';
 import ApproveButton from './ApproveButton';
+import ApproveIconButton from './ApproveIconButton';
 import { useTranslation } from 'react-i18next';
 
 const UserCard = ({
@@ -28,11 +29,7 @@ const UserCard = ({
       {/* Floating action icons on card, aligned with 'Usuario:' label */}
       <Box sx={{ position: 'absolute', top: 32, right: 8, display: 'flex', flexDirection: 'column', gap: 0.5, zIndex: 2 }}>
         {user.status === 'pending' && (
-          <Tooltip title={t('users.header.actions')} arrow>
-            <span>
-              <ApproveButton onClick={() => onApprove(user.id)} loading={approving} />
-            </span>
-          </Tooltip>
+          <ApproveIconButton onClick={() => onApprove(user.id)} loading={approving} />
         )}
         <Tooltip title={t('users.header.actions')} arrow>
           <IconButton color="error" size="small" onClick={() => setConfirmOpen(true)} sx={{ background: 'white', boxShadow: 1, p: '2px' }} disabled={deleting}>
@@ -51,6 +48,7 @@ const UserCard = ({
           minHeight: 0,
           flex: 1,
           width: '100%',
+          fontSize: { xs: '0.78rem', sm: '0.95rem' },
         }}
       >
         <Box
@@ -66,17 +64,17 @@ const UserCard = ({
             justifyContent: 'center',
           }}
         >
-          <Typography component="dt" variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+          <Typography component="dt" variant="body2" color="text.secondary" sx={{ fontWeight: 500, fontSize: { xs: '0.80rem', sm: '0.95rem' } }}>
             {t('users.header.user')}
           </Typography>
-          <Box component="dd" sx={{ m: 0, minWidth: 110, maxWidth: 110, fontWeight: 'bold', fontSize: '1rem', textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          <Box component="dd" sx={{ m: 0, minWidth: 110, maxWidth: 110, fontWeight: 'bold', fontSize: { xs: '0.86rem', sm: '0.98rem' }, textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {user.username}
           </Box>
           <Box sx={{ gridColumn: '1 / span 2', display: 'flex', alignItems: 'center', mt: 0.5, mb: 0.5 }}>
-            <Typography component="dt" variant="body2" color="text.secondary" sx={{ fontWeight: 500, fontSize: '0.85rem', pr: 1, minWidth: 0 }}>
+            <Typography component="dt" variant="body2" color="text.secondary" sx={{ fontWeight: 500, fontSize: { xs: '0.75rem', sm: '0.90rem' }, pr: 1, minWidth: 0 }}>
               {t('users.header.role')}
             </Typography>
-            <Box component="dd" sx={{ m: 0, display: 'flex', alignItems: 'center', gap: 0, minWidth: 80, maxWidth: 110 }}>
+            <Box component="dd" sx={{ m: 0, display: 'flex', alignItems: 'center', gap: 0, minWidth: 80, maxWidth: 110, fontSize: { xs: '0.78rem', sm: '0.95rem' } }}>
               <RoleSelect
                 value={roleEdit ?? user.role}
                 onChange={e => onRoleChange(user.id, e.target.value)}

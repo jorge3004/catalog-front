@@ -14,7 +14,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const CatalogTableList = ({ catalogs, handlePreview, handleDelete }) => (
+const CatalogTableList = ({ catalogs, handlePreview, handleDelete, userRole }) => (
   <TableContainer
     component={Paper}
     sx={{
@@ -58,12 +58,16 @@ const CatalogTableList = ({ catalogs, handlePreview, handleDelete }) => (
               <IconButton onClick={() => handlePreview(cat.url)} title="Vista previa PDF" size="medium" sx={{ m: 0.5 }}>
                 <VisibilityIcon fontSize="medium" />
               </IconButton>
-              <IconButton component="a" href={cat.url} download title="Descargar PDF" size="medium" sx={{ m: 0.5 }}>
-                <CloudDownloadIcon fontSize="medium" />
-              </IconButton>
-              <IconButton onClick={() => handleDelete(cat.id)} title="Eliminar catálogo" size="medium" sx={{ m: 0.5 }}>
-                <DeleteIcon fontSize="medium" color="error" />
-              </IconButton>
+              {userRole === 'admin' && (
+                <>
+                  <IconButton component="a" href={cat.url} download title="Descargar PDF" size="medium" sx={{ m: 0.5 }}>
+                    <CloudDownloadIcon fontSize="medium" />
+                  </IconButton>
+                  <IconButton onClick={() => handleDelete(cat.id)} title="Eliminar catálogo" size="medium" sx={{ m: 0.5 }}>
+                    <DeleteIcon fontSize="medium" color="error" />
+                  </IconButton>
+                </>
+              )}
             </TableCell>
           </TableRow>
         ))}
