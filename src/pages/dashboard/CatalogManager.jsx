@@ -12,7 +12,7 @@ import '@react-pdf-viewer/core/lib/styles/index.css';
 import PDFPreviewWithZoom from '../../components/dashboard/catalogManager/PDFPreviewWithZoom';
 
 import {
-// Lógica de catálogos movida a useCatalogs
+  // Lógica de catálogos movida a useCatalogs
 } from '../../api/catalogApi';
 import {
   Box,
@@ -116,7 +116,7 @@ const CatalogManager = () => {
           <CatalogCardList
             catalogs={catalogs}
             onPreview={handlePreview}
-            onDownload={() => {}}
+            onDownload={() => { }}
             onDelete={handleDelete}
             userRole={user?.role}
           />
@@ -132,15 +132,29 @@ const CatalogManager = () => {
       <Dialog
         open={previewOpen}
         onClose={handleClosePreview}
-        maxWidth="xl"
-        fullWidth
+        maxWidth={false}
+        // fullScreen
+        PaperProps={{
+          sx: {
+            width: '95vw',
+            height: '95vh',
+            maxWidth: '95vw',
+            maxHeight: '95vh',
+            m: 'auto',
+            borderRadius: 2,
+          },
+        }}
       >
-        <DialogTitle sx={{ pr: 1, position: 'relative', minHeight: 48, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span>{
-            previewUrl
-              ? (catalogs.find(cat => cat.url === previewUrl)?.name || 'PDF')
-              : 'PDF'
-          }</span>
+        <DialogTitle sx={{ pr: 1, py: 0.5, minHeight: 28, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <span style={{ width: '100%' }}>
+            <Typography variant="subtitle2" noWrap sx={{ fontWeight: 500, fontSize: '0.95rem', maxWidth: '90vw', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+              {
+                previewUrl
+                  ? (catalogs.find(cat => cat.url === previewUrl)?.name || 'PDF')
+                  : 'PDF'
+              }
+            </Typography>
+          </span>
         </DialogTitle>
         <DialogContent sx={{ position: 'relative', p: 0 }}>
           {previewUrl ? (

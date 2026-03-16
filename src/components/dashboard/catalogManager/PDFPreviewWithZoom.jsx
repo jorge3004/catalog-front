@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import { Worker, Viewer } from '@react-pdf-viewer/core';
 // importación de zoomPlugin y estilos
@@ -13,13 +13,22 @@ import CloseIcon from '@mui/icons-material/Close';
 import Tooltip from '@mui/material/Tooltip';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
+
 const PDFPreviewWithZoom = ({ fileUrl, onClose }) => {
   const { user } = useAuth();
   const zoomPluginInstance = zoomPlugin();
-  const { ZoomInButton, ZoomOutButton, ZoomPopover } = zoomPluginInstance;
+  const { ZoomInButton, ZoomOutButton, ZoomPopover, zoomTo } = zoomPluginInstance;
+  const containerRef = useRef(null);
+
+
+  // Ajustar el zoom al ancho del contenedor cuando el PDF esté cargado
+  const handleDocumentLoad = () => {
+    // 'PageWidth' ajusta el PDF al ancho del contenedor
+    zoomTo && zoomTo('PageWidth');
+  };
 
   return (
-    <div style={{ position: 'relative', width: '100%', minHeight: '80vh', background: '#f8f8f8' }}>
+    <div ref={containerRef} style={{ position: 'relative', width: '100%', minHeight: '90vh', background: '#f8f8f8' }}>
       {/* Botón X para cerrar en la esquina superior derecha, siempre visible */}
       <IconButton
         aria-label="close"
@@ -27,8 +36,8 @@ const PDFPreviewWithZoom = ({ fileUrl, onClose }) => {
         size="small"
         sx={{
           position: 'fixed',
-          right: 24,
-          top: 24,
+          right: 1,
+          top: 1,
           zIndex: 1300,
           color: 'grey.600',
           background: 'white',
@@ -42,8 +51,8 @@ const PDFPreviewWithZoom = ({ fileUrl, onClose }) => {
       <div
         style={
           user?.role === 'admin'
-            ? { display: 'flex', alignItems: 'center', padding: 12, paddingRight: 56 }
-            : { display: 'flex', alignItems: 'center', padding: 12, justifyContent: 'center' }
+            ? { display: 'flex', alignItems: 'center', padding: '5px', paddingRight: 56 }
+            : { display: 'flex', alignItems: 'center', padding: '5px', justifyContent: 'center' }
         }
       >
         <div style={{ display: 'flex', gap: 12 }}>
@@ -60,9 +69,9 @@ const PDFPreviewWithZoom = ({ fileUrl, onClose }) => {
           </Tooltip>
         )}
       </div>
-      <div style={{ marginTop: 8, height: 'calc(80vh - 56px)', overflow: 'auto' }}>
+      <div style={{ height: 'calc(95vh - 56px)', overflow: 'auto' }}>
         <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
-          <Viewer fileUrl={fileUrl} plugins={[zoomPluginInstance]} />
+          <Viewer fileUrl={fileUrl} plugins={[zoomPluginInstance]} onDocumentLoad={handleDocumentLoad} />
         </Worker>
       </div>
     </div>
