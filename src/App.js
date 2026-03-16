@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { BrowserRouter } from 'react-router-dom';
 import { themes } from './theme';
+import useThemeSwitcher from './hooks/useThemeSwitcher';
 import AppWithAuthLoader from './AppWithAuthLoader';
 import { AuthProvider } from './context/AuthContext';
 import './i18n';
@@ -18,20 +19,7 @@ function LastRouteSyncWrapper({ children }) {
 
 function App() {
     // Detectar tema preferido: localStorage ('light'|'dark') > navegador > default
-    function mapTheme(theme) {
-        if (theme === 'dark') return 'merisaDark';
-        return 'merisa'; // default y 'light'
-    }
-
-    let storedTheme = localStorage.getItem('theme'); // 'light' | 'dark' | null
-    let initialTheme;
-    if (storedTheme === 'light' || storedTheme === 'dark') {
-        initialTheme = mapTheme(storedTheme);
-    } else {
-        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        initialTheme = prefersDark ? 'merisaDark' : 'merisa';
-    }
-    const [themeName, setThemeName] = useState(initialTheme);
+    const { themeName, setThemeName } = useThemeSwitcher();
     const { i18n } = useTranslation();
 
     useEffect(() => {
@@ -50,7 +38,10 @@ function App() {
             <AuthProvider>
                 <BrowserRouter>
                     <LastRouteSyncWrapper>
-                        <AppWithAuthLoader />
+                        <AppWithAuthLoader
+                            themeName={themeName}
+                            onThemeChange={setThemeName}
+                        />
                     </LastRouteSyncWrapper>
                 </BrowserRouter>
             </AuthProvider>

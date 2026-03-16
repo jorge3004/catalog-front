@@ -7,16 +7,12 @@ import { useTheme } from '@mui/material/styles';
 import LanguageSelector from './LanguageSelector';
 import ChangePasswordForm from './ChangePasswordForm';
 import { useTranslation } from 'react-i18next';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
+import ThemeSelector from './ThemeSelector';
 
 const ProfileModal = ({ open, onClose, onThemeChange, themeName }) => {
   const { t } = useTranslation();
   const muiTheme = useTheme();
-  const handleThemeToggle = () => {
-    const newTheme = themeName === 'merisa' ? 'merisaDark' : 'merisa';
-    if (onThemeChange) onThemeChange(newTheme);
-  };
+  // ...existing code...
 
   return (
     <Dialog
@@ -80,17 +76,9 @@ const ProfileModal = ({ open, onClose, onThemeChange, themeName }) => {
           <Typography variant="h5">
             {t('profile.title', 'Perfil de Usuario')}
           </Typography>
-          <IconButton
-            onClick={handleThemeToggle}
-            sx={{ color: muiTheme.palette.primary.main }}
-            aria-label={
-              themeName === 'merisa'
-                ? 'Activar modo oscuro'
-                : 'Activar modo claro'
-            }
-          >
-            {themeName === 'merisa' ? <Brightness4Icon /> : <Brightness7Icon />}
-          </IconButton>
+          
+          <ThemeSelector themeName={themeName} onThemeChange={onThemeChange} />
+         
         </Box>
         <Divider sx={{ my: 2 }} />
         <LanguageSelector />

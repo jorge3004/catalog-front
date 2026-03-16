@@ -20,11 +20,12 @@ const UserMenu = ({
   handleLogout,
   initials,
   displayName,
+  themeName,
+  onThemeChange,
 }) => {
   const { t, i18n } = useTranslation();
   const [profileOpen, setProfileOpen] = useState(false);
   // ...existing code...
-
   return (
     <Box sx={{ ml: 2, display: 'flex', alignItems: 'center' }}>
       <IconButton
@@ -86,7 +87,12 @@ const UserMenu = ({
           {t('userMenu.logout', { defaultValue: i18n.language === 'en' ? 'Logout' : 'Cerrar sesión' })}
         </MenuItem>
       </Menu>
-      <ProfileModal open={profileOpen} onClose={() => setProfileOpen(false)} />
+      <ProfileModal
+        open={profileOpen}
+        onClose={() => setProfileOpen(false)}
+        themeName={themeName}
+        onThemeChange={onThemeChange}
+      />
     </Box>
   );
 };

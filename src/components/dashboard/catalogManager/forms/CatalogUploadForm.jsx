@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, TextField, Button, Typography } from '@mui/material';
+import { Box, TextField, Button, Typography, InputAdornment, IconButton } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const CatalogUploadForm = ({
   name,
@@ -28,13 +29,39 @@ const CatalogUploadForm = ({
       onChange={(e) => setName(e.target.value)}
       size="small"
       fullWidth={isMobile}
+      InputProps={{
+        endAdornment: name ? (
+          <InputAdornment position="end">
+            <IconButton
+              aria-label="Limpiar nombre"
+              onClick={() => setName('')}
+              edge="end"
+              size="small"
+            >
+              <ClearIcon fontSize="small" />
+            </IconButton>
+          </InputAdornment>
+        ) : null,
+      }}
     />
     <input
       id="pdf-upload"
       type="file"
       accept="application/pdf"
       style={{ display: 'none' }}
-      onChange={e => setFile(e.target.files[0])}
+      onChange={e => {
+        const selected = e.target.files[0];
+        setFile(selected);
+        // Usar función para obtener el valor más reciente de name
+        if (selected) {
+          setName(prevName => {
+            if (!prevName || prevName === '') {
+              return selected.name.replace(/\.pdf$/i, '');
+            }
+            return prevName;
+          });
+        }
+      }}
     />
     <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <label htmlFor="pdf-upload" style={{ width: '100%' }}>

@@ -4,6 +4,7 @@ const ROLE_OPTIONS = [
 ];
 
 import React from 'react';
+import { useAuth } from '../../context/AuthContext';
 import { Typography, Box, CircularProgress } from '@mui/material';
 import UserTable from '../../components/dashboard/userManager/UserTable';
 import useUsers from '../../hooks/user/useUsers';
@@ -12,6 +13,7 @@ import useEditRole from '../../hooks/user/useEditRole';
 import useDeactivateUser from '../../hooks/user/useDeactivateUser';
 
 const UserManager = () => {
+  const { user } = useAuth();
   const token = localStorage.getItem('token');
   const { users, setUsers, loading, error, setError } = useUsers(token);
   const { approving, handleApprove } = useApproveUser(
@@ -27,6 +29,16 @@ const UserManager = () => {
     handleSaveRole,
   } = useEditRole(token, setUsers, setError);
   const { deactivating, handleDeactivate } = useDeactivateUser(token, setUsers, setError);
+
+  if (!user || user.role !== 'admin') {
+    return (
+      <Box sx={{ p: { xs: 2, sm: 4 }, textAlign: 'center' }}>
+        <Typography variant="h6" color="error">
+          Acceso restringido: solo administradores pueden ver el gestor de usuarios.
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ p: { xs: 1, sm: 2 } }}>

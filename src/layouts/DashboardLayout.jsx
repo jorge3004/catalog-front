@@ -9,7 +9,8 @@ import { useTheme } from '@mui/material/styles';
 
 const NAVBAR_HEIGHT = 64; // Altura estándar de AppBar/Toolbar
 
-const DashboardLayout = () => {
+const DashboardLayout = ({ themeName, onThemeChange }) => {
+
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
   const theme = useTheme();
@@ -35,6 +36,8 @@ const DashboardLayout = () => {
         <NavBar
           onMenuClick={isMobile ? handleDrawerToggle : undefined}
           title={title}
+          themeName={themeName}
+          onThemeChange={onThemeChange}
         />
       </Box>
       {/* Layout principal con Sidebar y contenido, debajo del NavBar */}

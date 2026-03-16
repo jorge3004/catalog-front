@@ -16,7 +16,7 @@ import UserMenu from './UserMenu';
 
 import MenuIcon from '@mui/icons-material/Menu';
 
-const NavBar = ({ onMenuClick, title = 'Catálogo' }) => {
+const NavBar = ({ onMenuClick, title = 'Catálogo', themeName, onThemeChange }) => {
   const { user, setUser } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -25,10 +25,10 @@ const NavBar = ({ onMenuClick, title = 'Catálogo' }) => {
 
   const initials = user.name
     ? user.name
-        .split(' ')
-        .map((n) => n[0])
-        .join('')
-        .toUpperCase()
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase()
     : user.username
       ? user.username[0].toUpperCase()
       : '';
@@ -58,24 +58,26 @@ const NavBar = ({ onMenuClick, title = 'Catálogo' }) => {
           <IconButton
             color="inherit"
             edge="start"
-            onClick={onMenuClick}
             sx={{ mr: 2, display: { xs: 'inline-flex', sm: 'none' } }}
+            onClick={onMenuClick}
           >
             <MenuIcon />
           </IconButton>
         )}
         <Typography
           variant="h6"
-          sx={{
+          noWrap
+          component="div"
+          sx={(theme) => ({
             flexGrow: 1,
-            color: 'primary.main',
+            color: theme.palette.mode === 'dark' ? '#fff' : '#222',
             fontWeight: 700,
             fontSize: { xs: '1.1rem', sm: '1.25rem', md: '1.5rem', lg: '1.7rem' },
             lineHeight: 1.2,
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
-          }}
+          })}
         >
           {title}
         </Typography>
@@ -87,10 +89,12 @@ const NavBar = ({ onMenuClick, title = 'Catálogo' }) => {
           handleLogout={handleLogout}
           initials={initials}
           displayName={user.name || user.username}
+          themeName={themeName}
+          onThemeChange={onThemeChange}
         />
       </Toolbar>
     </AppBar>
   );
-};
+}
 
 export default NavBar;
