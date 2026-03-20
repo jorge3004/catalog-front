@@ -8,7 +8,7 @@ import DashboardHome from '../pages/dashboard/DashboardHome';
 import Login from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import ForgotPasswordPage from '../pages/ForgotPasswordPage';
-const AppRoutes = ({ themeName, onThemeChange }) => {
+const AppRoutes = ({ theme, toggleTheme }) => {
   const { user, hasSession, sessionReason } = useAuth();
   const location = useLocation();
   // Redirigir a /login si no hay sesión y no estamos ya en /login
@@ -59,7 +59,7 @@ const AppRoutes = ({ themeName, onThemeChange }) => {
       <Route path="/forgot" element={<ForgotPasswordPage />} />
       <Route
         path="/dashboard"
-        element={<DashboardLayout themeName={themeName} onThemeChange={onThemeChange} />}
+        element={<DashboardLayout theme={theme} toggleTheme={toggleTheme} />}
       >
         <Route
           path="users"

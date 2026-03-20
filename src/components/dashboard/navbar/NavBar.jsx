@@ -12,11 +12,13 @@ import {
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useAuth } from '../../../context/AuthContext';
 
-import UserMenu from './UserMenu';
+import UserMenu from './userMenu/UserMenu';
+import SearchBar from './SearchBar';
+import AddCatalogButton from './AddCatalogButton';
 
 import MenuIcon from '@mui/icons-material/Menu';
 
-const NavBar = ({ onMenuClick, title = 'Catálogo', themeName, onThemeChange }) => {
+const NavBar = ({ onMenuClick, onSearch, theme, toggleTheme, onAddClick }) => {
   const { user, setUser } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -39,21 +41,10 @@ const NavBar = ({ onMenuClick, title = 'Catálogo', themeName, onThemeChange }) 
     setProfileOpen(true);
     handleClose();
   };
-  const handleLogout = () => {
-    setUser(null);
-    // Preservar lang y theme
-    const lang = localStorage.getItem('lang');
-    const theme = localStorage.getItem('theme');
-    localStorage.clear();
-    if (lang) localStorage.setItem('lang', lang);
-    if (theme) localStorage.setItem('theme', theme);
-    handleClose();
-    window.location.href = '/login';
-  };
 
   return (
     <AppBar position="static" color="default" elevation={1}>
-      <Toolbar>
+      <Toolbar sx={{ gap: 2 }}>
         {onMenuClick && (
           <IconButton
             color="inherit"
@@ -64,33 +55,19 @@ const NavBar = ({ onMenuClick, title = 'Catálogo', themeName, onThemeChange }) 
             <MenuIcon />
           </IconButton>
         )}
-        <Typography
-          variant="h6"
-          noWrap
-          component="div"
-          sx={(theme) => ({
-            flexGrow: 1,
-            color: theme.palette.mode === 'dark' ? '#fff' : '#222',
-            fontWeight: 700,
-            fontSize: { xs: '1.1rem', sm: '1.25rem', md: '1.5rem', lg: '1.7rem' },
-            lineHeight: 1.2,
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          })}
-        >
-          {title}
-        </Typography>
+        <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
+          <SearchBar onSearch={onSearch} />
+          <AddCatalogButton onClick={onAddClick} />
+        </Box>
         <UserMenu
           user={user}
           anchorEl={anchorEl}
           handleMenu={handleMenu}
           handleClose={handleClose}
-          handleLogout={handleLogout}
           initials={initials}
           displayName={user.name || user.username}
-          themeName={themeName}
-          onThemeChange={onThemeChange}
+          theme={theme}
+          toggleTheme={toggleTheme}
         />
       </Toolbar>
     </AppBar>

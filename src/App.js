@@ -3,13 +3,13 @@ import React, { useEffect } from 'react';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { BrowserRouter } from 'react-router-dom';
 import { themes } from './theme';
-import useThemeSwitcher from './hooks/useThemeSwitcher';
 import AppWithAuthLoader from './AppWithAuthLoader';
 import { AuthProvider } from './context/AuthContext';
 import './i18n';
 import { useTranslation } from 'react-i18next';
-import useLastRouteSync from './hooks/useLastRouteSync';
 import './global.css';
+import useThemeSwitcher from './hooks/userSession/useThemeSwitcher';
+import useLastRouteSync from './hooks/userSession/useLastRouteSync';
 
 
 function LastRouteSyncWrapper({ children }) {
@@ -19,7 +19,7 @@ function LastRouteSyncWrapper({ children }) {
 
 function App() {
     // Detectar tema preferido: localStorage ('light'|'dark') > navegador > default
-    const { themeName, setThemeName } = useThemeSwitcher();
+    const { theme, toggleTheme } = useThemeSwitcher();
     const { i18n } = useTranslation();
 
     useEffect(() => {
@@ -33,14 +33,14 @@ function App() {
 
 
     return (
-        <ThemeProvider theme={themes[themeName]}>
+        <ThemeProvider theme={themes[theme]}>
             <CssBaseline />
             <AuthProvider>
                 <BrowserRouter>
                     <LastRouteSyncWrapper>
                         <AppWithAuthLoader
-                            themeName={themeName}
-                            onThemeChange={setThemeName}
+                            theme={theme}
+                            toggleTheme={toggleTheme}
                         />
                     </LastRouteSyncWrapper>
                 </BrowserRouter>

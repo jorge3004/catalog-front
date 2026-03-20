@@ -2,7 +2,7 @@
 // Servicio para manejar autenticación y usuario actual
 import apiService from './apiService';
 
-const TOKEN_KEY = 'authToken';
+const TOKEN_KEY = 'token';
 
 const userService = {
   async login(username, password) {

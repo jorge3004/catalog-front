@@ -9,7 +9,7 @@ import ChangePasswordForm from './ChangePasswordForm';
 import { useTranslation } from 'react-i18next';
 import ThemeSelector from './ThemeSelector';
 
-const ProfileModal = ({ open, onClose, onThemeChange, themeName }) => {
+const ProfileModal = ({ open, onClose, user, theme, toggleTheme }) => {
   const { t } = useTranslation();
   const muiTheme = useTheme();
   // ...existing code...
@@ -77,7 +77,7 @@ const ProfileModal = ({ open, onClose, onThemeChange, themeName }) => {
             {t('profile.title', 'Perfil de Usuario')}
           </Typography>
           
-          <ThemeSelector themeName={themeName} onThemeChange={onThemeChange} />
+            <ThemeSelector theme={theme} toggleTheme={toggleTheme} />
          
         </Box>
         <Divider sx={{ my: 2 }} />

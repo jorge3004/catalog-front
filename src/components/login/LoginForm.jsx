@@ -1,20 +1,19 @@
 import React from 'react';
 import { TextField, Button, Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import useLogin from '../../hooks/useLogin';
 import LoginLinks from './LoginLinks';
+import useLogin from '../../hooks/userSession/useLogin';
 
 const LoginForm = () => {
   const { t } = useTranslation();
-  const {
-    username,
-    setUsername,
-    password,
-    setPassword,
-    error,
-    loading,
-    handleSubmit,
-  } = useLogin();
+  const { login, loading, error } = useLogin();
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await login(username, password);
+  };
   return (
     <Box
       component="form"

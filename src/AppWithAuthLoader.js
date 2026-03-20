@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 const CONNECTION_ERROR_KEY = 'app.connectionError';
 
-const AppWithAuthLoader = ({ themeName, onThemeChange }) => {
+const AppWithAuthLoader = ({ theme, toggleTheme }) => {
     const { loading, apiError, apiErrorMsg } = useAuth();
     const { t, i18n } = useTranslation();
 
@@ -37,7 +37,7 @@ const AppWithAuthLoader = ({ themeName, onThemeChange }) => {
             </Box>
         );
     }
-    return <AppRoutes themeName={themeName} onThemeChange={onThemeChange} />;
+    return <AppRoutes theme={theme} toggleTheme={toggleTheme} />;
 };
 
 export default AppWithAuthLoader;

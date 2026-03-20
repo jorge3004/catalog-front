@@ -4,32 +4,29 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useTheme } from '@mui/material/styles';
 
-const ThemeSelector = ({ themeName, onThemeChange }) => {
-
+const ThemeSelector = ({ theme, toggleTheme }) => {
     const muiTheme = useTheme();
     const handleThemeToggle = () => {
-        const newTheme = themeName === 'merisa' ? 'merisaDark' : 'merisa';
-        if (onThemeChange) onThemeChange(newTheme);
+        if (toggleTheme) toggleTheme();
     };
-
     return (
         <IconButton
             onClick={handleThemeToggle}
             sx={{
                 color:
-                    themeName === 'merisa'
-                        ? '#222' // negro casi puro para tema claro
-                        : '#FFD600', // amarillo brillante para tema oscuro
+                    theme === 'merisa'
+                        ? '#222'
+                        : '#FFD600',
                 backgroundColor: 'transparent',
                 transition: 'color 0.2s',
             }}
             aria-label={
-                themeName === 'merisa'
+                theme === 'merisa'
                     ? 'Activar modo oscuro'
                     : 'Activar modo claro'
             }
         >
-            {themeName === 'merisa' ? <Brightness4Icon /> : <Brightness7Icon />}
+            {theme === 'merisa' ? <Brightness4Icon /> : <Brightness7Icon />}
         </IconButton>
     );
 };
