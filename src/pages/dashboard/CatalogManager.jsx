@@ -23,13 +23,14 @@ import {
 import useCatalogs from '../../hooks/catalog/useCatalogs';
 import { useAuth } from '../../context/AuthContext';
 import CatalogCardList from '../../components/dashboard/catalogManager/CatalogCardList';
-import CatalogUploadForm from '../../components/dashboard/catalogManager/forms/CatalogUploadForm';
+import CatalogUploadModal from '../../components/dashboard/catalogManager/forms/CatalogUploadModal';
 import CatalogTableList from '../../components/dashboard/catalogManager/table/CatalogTableList';
 import { useTheme } from '@mui/material/styles';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+
 
 
 
@@ -45,9 +46,26 @@ const CatalogManager = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [file, setFile] = useState(null);
   const [name, setName] = useState('');
+  const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewUrl, setPreviewUrl] = useState('');
   const token = localStorage.getItem('token');
+
+  // Al abrir el modal, empuja un nuevo estado al historial. Al presionar atrás, cierra el modal.
+  React.useEffect(() => {
+    if (!previewOpen) return;
+    const handlePopState = (e) => {
+      setPreviewOpen(false);
+      setPreviewUrl('');
+    };
+    window.history.pushState(null, '', window.location.href);
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      // Si el modal se cierra por otro medio, regresa el historial a la normalidad
+      if (window.history.state === null) window.history.back();
+    };
+  }, [previewOpen]);
 
   // Custom hook para lógica de catálogos
   const {
@@ -89,16 +107,31 @@ const CatalogManager = () => {
     <Box sx={{ p: { xs: 1, sm: 2 } }}>
       {error && <Typography color="error">{error}</Typography>}
       {user?.role === 'admin' && (
-        <CatalogUploadForm
-          name={name}
-          setName={setName}
-          file={file}
-          setFile={setFile}
-          uploading={uploading}
-          error={error}
-          handleUpload={handleUpload}
-          isMobile={isMobile}
-        />
+        <Box sx={{ mb: 2 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setUploadModalOpen(true)}
+            sx={{ fontWeight: 600 }}
+          >
+            Subir nuevo catálogo PDF
+          </Button>
+          <CatalogUploadModal
+            open={uploadModalOpen}
+            onClose={() => setUploadModalOpen(false)}
+            name={name}
+            setName={setName}
+            file={file}
+            setFile={setFile}
+            uploading={uploading}
+            error={error}
+            handleUpload={e => {
+              handleUpload(e);
+              setUploadModalOpen(false);
+            }}
+            isMobile={isMobile}
+          />
+        </Box>
       )}
       {loading ? (
         <Box

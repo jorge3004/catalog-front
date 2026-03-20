@@ -21,10 +21,11 @@ const PDFPreviewWithZoom = ({ fileUrl, onClose }) => {
   const containerRef = useRef(null);
 
 
-  // Ajustar el zoom al ancho del contenedor cuando el PDF esté cargado
+  // Ajustar el zoom para que el PDF se vea completo (PageFit) cuando esté cargado
   const handleDocumentLoad = () => {
-    // 'PageWidth' ajusta el PDF al ancho del contenedor
-    zoomTo && zoomTo('PageWidth');
+    setTimeout(() => {
+      zoomTo && zoomTo('PageFit');
+    }, 250);
   };
 
   return (
@@ -36,7 +37,7 @@ const PDFPreviewWithZoom = ({ fileUrl, onClose }) => {
         size="small"
         sx={{
           position: 'fixed',
-          right: 1,
+          right: 10,
           top: 1,
           zIndex: 1300,
           color: 'grey.600',
