@@ -84,6 +84,6 @@ const altTheme = createTheme({
 });
 
 export const themes = {
-    merisa: defaultTheme,
-    merisaDark: altTheme,
+    light: defaultTheme,
+    dark: altTheme,
 };

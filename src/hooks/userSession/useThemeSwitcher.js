@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 
 
+
+
 const useThemeSwitcher = () => {
-    // Usar 'merisa' y 'merisaDark' para los temas definidos en theme.js
-    const validThemes = ['merisa', 'merisaDark'];
+    // Solo exponer y manejar 'light'/'dark' externamente
+    const validThemes = ['light', 'dark'];
     let initialTheme = localStorage.getItem('theme');
     if (!validThemes.includes(initialTheme)) {
-        initialTheme = 'merisa';
+        initialTheme = 'light';
     }
     const [theme, setTheme] = useState(initialTheme);
 
@@ -16,7 +18,7 @@ const useThemeSwitcher = () => {
     }, [theme]);
 
     const toggleTheme = () => {
-        setTheme((prev) => (prev === 'merisa' ? 'merisaDark' : 'merisa'));
+        setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
     };
 
     return { theme, toggleTheme };

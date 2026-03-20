@@ -76,9 +76,9 @@ const ProfileModal = ({ open, onClose, user, theme, toggleTheme }) => {
           <Typography variant="h5">
             {t('profile.title', 'Perfil de Usuario')}
           </Typography>
-          
-            <ThemeSelector theme={theme} toggleTheme={toggleTheme} />
-         
+
+          <ThemeSelector theme={theme} toggleTheme={toggleTheme} />
+
         </Box>
         <Divider sx={{ my: 2 }} />
         <LanguageSelector />

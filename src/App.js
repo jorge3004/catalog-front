@@ -30,8 +30,6 @@ function App() {
         }
     }, [i18n.language]);
 
-
-
     return (
         <ThemeProvider theme={themes[theme]}>
             <CssBaseline />
