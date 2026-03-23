@@ -20,22 +20,24 @@ import {
   CircularProgress,
   useMediaQuery,
 } from '@mui/material';
-import useCatalogs from '../../hooks/catalog/useCatalogs';
+import { useCatalogsContext } from '../../context/CatalogsContext';
 import { useAuth } from '../../context/AuthContext';
 import CatalogCardList from '../../components/dashboard/catalogManager/CatalogCardList';
-import CatalogUploadModal from '../../components/dashboard/catalogManager/forms/CatalogUploadModal';
+// import CatalogUploadModal from '../../components/dashboard/catalogManager/forms/CatalogUploadModal';
 import CatalogTableList from '../../components/dashboard/catalogManager/table/CatalogTableList';
 import { useTheme } from '@mui/material/styles';
 
-import DeleteIcon from '@mui/icons-material/Delete';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import { useOutletContext } from 'react-router-dom';
 
 
 
 
 const CatalogManager = () => {
   const { user } = useAuth();
+  // Mover hook aquí
+  const outletContext = useOutletContext();
 
   const handleClosePreview = () => {
     setPreviewOpen(false);
@@ -46,7 +48,7 @@ const CatalogManager = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [file, setFile] = useState(null);
   const [name, setName] = useState('');
-  const [uploadModalOpen, setUploadModalOpen] = useState(false);
+  // const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewUrl, setPreviewUrl] = useState('');
   const token = localStorage.getItem('token');
@@ -76,7 +78,7 @@ const CatalogManager = () => {
     handleUpload: hookHandleUpload,
     handleDelete: hookHandleDelete,
     setError,
-  } = useCatalogs(token);
+  } = useCatalogsContext();
 
   // Asegura que la vista previa siempre use la URL real del PDF
   const handlePreview = (urlOrId) => {
@@ -100,39 +102,15 @@ const CatalogManager = () => {
   const handleDelete = (id) => {
     if (window.confirm('¿Eliminar este catálogo?')) {
       hookHandleDelete(id);
+      // Si necesitas usar openGlobalModal, accede así:
+      // const { openGlobalModal } = outletContext || {};
+      // ...
     }
   };
 
   return (
     <Box sx={{ p: { xs: 1, sm: 2 } }}>
       {error && <Typography color="error">{error}</Typography>}
-      {user?.role === 'admin' && (
-        <Box sx={{ mb: 2 }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setUploadModalOpen(true)}
-            sx={{ fontWeight: 600 }}
-          >
-            Subir nuevo catálogo PDF
-          </Button>
-          <CatalogUploadModal
-            open={uploadModalOpen}
-            onClose={() => setUploadModalOpen(false)}
-            name={name}
-            setName={setName}
-            file={file}
-            setFile={setFile}
-            uploading={uploading}
-            error={error}
-            handleUpload={e => {
-              handleUpload(e);
-              setUploadModalOpen(false);
-            }}
-            isMobile={isMobile}
-          />
-        </Box>
-      )}
       {loading ? (
         <Box
           sx={{

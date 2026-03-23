@@ -59,6 +59,10 @@ export const AuthProvider = ({ children }) => {
                 if (data && data.user) {
                   setUser(data.user);
                   localStorage.setItem('user', JSON.stringify(data.user));
+                  // Guardar lastRoute si viene del backend
+                  if (data.user.lastRoute) {
+                    localStorage.setItem('lastRoute', data.user.lastRoute);
+                  }
                   // Guardar lang si no existe o es diferente
                   if (data.user.language) {
                     const currentLang = localStorage.getItem('lang');
@@ -141,3 +145,5 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
+
+export { AuthContext };

@@ -9,13 +9,6 @@ import './i18n';
 import { useTranslation } from 'react-i18next';
 import './global.css';
 import useThemeSwitcher from './hooks/userSession/useThemeSwitcher';
-import useLastRouteSync from './hooks/userSession/useLastRouteSync';
-
-
-function LastRouteSyncWrapper({ children }) {
-    useLastRouteSync();
-    return children;
-}
 
 function App() {
     // Detectar tema preferido: localStorage ('light'|'dark') > navegador > default
@@ -35,12 +28,10 @@ function App() {
             <CssBaseline />
             <AuthProvider>
                 <BrowserRouter>
-                    <LastRouteSyncWrapper>
-                        <AppWithAuthLoader
-                            theme={theme}
-                            toggleTheme={toggleTheme}
-                        />
-                    </LastRouteSyncWrapper>
+                    <AppWithAuthLoader
+                        theme={theme}
+                        toggleTheme={toggleTheme}
+                    />
                 </BrowserRouter>
             </AuthProvider>
         </ThemeProvider>

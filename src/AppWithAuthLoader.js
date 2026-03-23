@@ -8,9 +8,12 @@ import { useTranslation } from 'react-i18next';
 
 const CONNECTION_ERROR_KEY = 'app.connectionError';
 
+import useLastRouteSync from './hooks/userSession/useLastRouteSync';
+
 const AppWithAuthLoader = ({ theme, toggleTheme }) => {
     const { loading, apiError, apiErrorMsg } = useAuth();
     const { t, i18n } = useTranslation();
+    useLastRouteSync();
 
     // Detect if the error is the connection error and translate if needed
     let displayErrorMsg = apiErrorMsg;

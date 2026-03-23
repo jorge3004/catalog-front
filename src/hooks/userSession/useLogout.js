@@ -6,6 +6,7 @@ const useLogout = () => {
     // Preservar lang y theme
     const lang = localStorage.getItem('lang');
     const theme = localStorage.getItem('theme');
+    localStorage.removeItem('lastRoute');
     localStorage.clear();
     if (lang) localStorage.setItem('lang', lang);
     if (theme) localStorage.setItem('theme', theme);

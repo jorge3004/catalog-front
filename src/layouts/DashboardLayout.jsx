@@ -6,6 +6,7 @@ import NavBar from '../components/dashboard/navbar/NavBar';
 import Sidebar from '../components/dashboard/Sidebar';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import { CatalogsProvider } from '../context/CatalogsContext';
 
 const NAVBAR_HEIGHT = 64; // Altura estándar de AppBar/Toolbar
 
@@ -29,8 +30,29 @@ const DashboardLayout = ({ theme, toggleTheme }) => {
   }
   const title = t(titleKey);
 
+  // Estado y lógica para modal global reutilizable
+  const [globalModal, setGlobalModal] = React.useState({
+    open: false,
+    type: null, // 'catalog', 'user', etc.
+    props: {},  // props específicos del modal
+  });
+
+  // Handler para abrir modal de catálogo desde el botón '+'
+  const handleAddCatalogClick = () => {
+    setGlobalModal({
+      open: true,
+      type: 'catalog',
+      props: {
+        isMobile,
+      },
+    });
+  };
+
+  // Handler para cerrar el modal global
+  const handleCloseGlobalModal = () => setGlobalModal((prev) => ({ ...prev, open: false }));
+
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
+    <CatalogsProvider>
       {/* NavBar fijo arriba */}
       <Box sx={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1201 }}>
         <NavBar
@@ -38,6 +60,7 @@ const DashboardLayout = ({ theme, toggleTheme }) => {
           title={title}
           theme={theme}
           toggleTheme={toggleTheme}
+          onAddClick={handleAddCatalogClick}
         />
       </Box>
       {/* Layout principal con Sidebar y contenido, debajo del NavBar */}
@@ -60,10 +83,29 @@ const DashboardLayout = ({ theme, toggleTheme }) => {
               handleDrawerToggle={handleDrawerToggle}
             />
           )}
-          <Outlet />
+          {/* Modal global reutilizable para catálogos, usuarios, etc. */}
+          {globalModal.type === 'catalog' && (
+            <React.Suspense fallback={null}>
+              {React.createElement(
+                require('../components/dashboard/catalogManager/forms/CatalogUploadModal').default,
+                {
+                  open: globalModal.open,
+                  onClose: handleCloseGlobalModal,
+                  ...globalModal.props,
+                }
+              )}
+            </React.Suspense>
+          )}
+          {/* Outlet para páginas, pasar handlers para que puedan abrir el modal global */}
+          <Outlet context={{
+            openGlobalModal: (type, props = {}) => setGlobalModal({ open: true, type, props }),
+            closeGlobalModal: handleCloseGlobalModal,
+            globalModal,
+          }} />
         </Box>
+
       </Box>
-    </Box>
+    </CatalogsProvider>
   );
 };
 
