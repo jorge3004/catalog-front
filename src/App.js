@@ -4,7 +4,7 @@ import { ThemeProvider, CssBaseline } from '@mui/material';
 import { BrowserRouter } from 'react-router-dom';
 import { themes } from './theme';
 import AppWithAuthLoader from './AppWithAuthLoader';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from './context/AuthProvider';
 import './i18n';
 import { useTranslation } from 'react-i18next';
 import './global.css';

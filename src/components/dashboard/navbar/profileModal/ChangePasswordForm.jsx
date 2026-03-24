@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Alert } from '@mui/material';
-import { useAuth } from '../../../../context/AuthContext';
+import { useAuth } from '../../../../context/AuthProvider';
 import { changePassword } from '../../../../api/userProfileApi';
 import { useTranslation } from 'react-i18next';
 

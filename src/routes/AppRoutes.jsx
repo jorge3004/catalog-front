@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import UserManager from '../pages/dashboard/UserManager';
 import CatalogManager from '../pages/dashboard/CatalogManager';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthProvider';
 import DashboardLayout from '../layouts/DashboardLayout';
 import DashboardHome from '../pages/dashboard/DashboardHome';
 import Login from '../pages/LoginPage';

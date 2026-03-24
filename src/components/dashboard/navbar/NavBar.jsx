@@ -10,7 +10,7 @@ import {
   Box,
 } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { useAuth } from '../../../context/AuthContext';
+import { useAuth } from '../../../context/AuthProvider';
 
 import UserMenu from './userMenu/UserMenu';
 import SearchBar from './SearchBar';

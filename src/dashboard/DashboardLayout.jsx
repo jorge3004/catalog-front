@@ -1,6 +1,6 @@
 // Archivo eliminado. Ahora está en src/layouts/DashboardLayout.jsx
 import React from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { Menu, MenuItem, Avatar, Typography } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';

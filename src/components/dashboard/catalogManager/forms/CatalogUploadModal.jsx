@@ -7,7 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import CatalogUploadForm from './CatalogUploadForm';
 import { useCatalogsContext } from '../../../../context/CatalogsContext';
-import { useAuth } from '../../../../context/AuthContext';
+import { useAuth } from '../../../../context/AuthProvider';
 
 
 

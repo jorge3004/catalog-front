@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { useAuth } from '../../../context/AuthContext';
+import { useAuth } from '../../../context/AuthProvider';
 import { Worker, Viewer } from '@react-pdf-viewer/core';
 // importación de zoomPlugin y estilos
 import { zoomPlugin } from '@react-pdf-viewer/zoom';

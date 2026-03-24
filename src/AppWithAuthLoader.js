@@ -1,7 +1,7 @@
 
 import React from 'react';
 import AppRoutes from './routes/AppRoutes';
-import { useAuth } from './context/AuthContext';
+import { useAuth } from './context/AuthProvider';
 import { CircularProgress, Box, Alert, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 

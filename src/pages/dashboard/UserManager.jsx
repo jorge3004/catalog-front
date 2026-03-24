@@ -4,7 +4,7 @@ const ROLE_OPTIONS = [
 ];
 
 import React from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthProvider';
 import { Typography, Box, CircularProgress } from '@mui/material';
 import UserTable from '../../components/dashboard/userManager/UserTable';
 import useUsers from '../../hooks/user/useUsers';

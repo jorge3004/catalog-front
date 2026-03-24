@@ -1,7 +1,7 @@
 import React from 'react';
 import { MenuItem, Select, FormControl, InputLabel } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../../../../context/AuthContext';
+import { useAuth } from '../../../../context/AuthProvider';
 
 const LanguageSelector = () => {
   const { i18n } = useTranslation();

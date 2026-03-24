@@ -21,7 +21,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { useCatalogsContext } from '../../context/CatalogsContext';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthProvider';
 import CatalogCardList from '../../components/dashboard/catalogManager/CatalogCardList';
 // import CatalogUploadModal from '../../components/dashboard/catalogManager/forms/CatalogUploadModal';
 import CatalogTableList from '../../components/dashboard/catalogManager/table/CatalogTableList';
