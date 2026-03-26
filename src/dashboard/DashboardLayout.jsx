@@ -20,6 +20,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import PeopleIcon from '@mui/icons-material/People';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { Link, Outlet } from 'react-router-dom';
+import { clearLocalStorageExcept } from '../utils/auth/authHelpers';
 
 const drawerWidth = 220;
 
@@ -46,12 +47,7 @@ const DashboardLayout = ({ children }) => {
   };
   const handleLogout = () => {
     setUser(null);
-    // Preservar lang y theme
-    const lang = localStorage.getItem('lang');
-    const theme = localStorage.getItem('theme');
-    localStorage.clear();
-    if (lang) localStorage.setItem('lang', lang);
-    if (theme) localStorage.setItem('theme', theme);
+    clearLocalStorageExcept(['lang', 'theme']);
     handleClose();
     navigate('/login');
   };

@@ -1,5 +1,6 @@
 // Lógica modularizada de autenticación
 import { useState, useEffect } from 'react';
+import { clearLocalStorageExcept, setUserLocalStorage } from '../../utils/auth/authHelpers';
 
 export function useAuthLogic() {
     const [user, setUser] = useState(null);
@@ -34,33 +35,14 @@ export function useAuthLogic() {
                                     setUser(false);
                                     setHasSession(false);
                                     setSessionReason('invalid-token');
-                                    const prevLang = localStorage.getItem('lang');
-                                    const prevTheme = localStorage.getItem('theme');
-                                    localStorage.clear();
-                                    if (prevLang) localStorage.setItem('lang', prevLang);
-                                    if (prevTheme) localStorage.setItem('theme', prevTheme);
+                                    clearLocalStorageExcept(['lang', 'theme']);
                                     setLoading(false);
                                     return;
                                 }
                                 const data = await res.json().catch(() => null);
                                 if (data && data.user) {
                                     setUser(data.user);
-                                    localStorage.setItem('user', JSON.stringify(data.user));
-                                    if (data.user.lastRoute) {
-                                        localStorage.setItem('lastRoute', data.user.lastRoute);
-                                    }
-                                    if (data.user.language) {
-                                        const currentLang = localStorage.getItem('lang');
-                                        if (!currentLang || currentLang !== data.user.language) {
-                                            localStorage.setItem('lang', data.user.language);
-                                        }
-                                    }
-                                    if (data.user.theme) {
-                                        const currentTheme = localStorage.getItem('theme');
-                                        if (!currentTheme || currentTheme !== data.user.theme) {
-                                            localStorage.setItem('theme', data.user.theme);
-                                        }
-                                    }
+                                    setUserLocalStorage(data.user);
                                     setHasSession(true);
                                     setSessionReason(null);
                                 } else {
@@ -74,22 +56,14 @@ export function useAuthLogic() {
                                 setUser(false);
                                 setHasSession(false);
                                 setSessionReason('invalid-token');
-                                const prevLang = localStorage.getItem('lang');
-                                const prevTheme = localStorage.getItem('theme');
-                                localStorage.clear();
-                                if (prevLang) localStorage.setItem('lang', prevLang);
-                                if (prevTheme) localStorage.setItem('theme', prevTheme);
+                                clearLocalStorageExcept(['lang', 'theme']);
                                 setLoading(false);
                             });
                     } else {
                         setUser(false);
                         setHasSession(false);
                         setSessionReason('no-token');
-                        const prevLang = localStorage.getItem('lang');
-                        const prevTheme = localStorage.getItem('theme');
-                        localStorage.clear();
-                        if (prevLang) localStorage.setItem('lang', prevLang);
-                        if (prevTheme) localStorage.setItem('theme', prevTheme);
+                        clearLocalStorageExcept(['lang', 'theme']);
                         setLoading(false);
                     }
                 }

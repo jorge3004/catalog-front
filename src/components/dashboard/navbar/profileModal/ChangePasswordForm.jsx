@@ -44,7 +44,7 @@ const ChangePasswordForm = () => {
     } catch (err) {
       setError(
         err.message ||
-          t('profile.passwordChangeError', 'Error al cambiar la contraseña.'),
+        t('profile.passwordChangeError', 'Error al cambiar la contraseña.'),
       );
     } finally {
       setLoading(false);
