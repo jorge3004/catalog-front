@@ -10,7 +10,8 @@ import {
     Box,
 } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import useLogout from '../../../../hooks/userSession/useLogout';
+import useSessionManager from '../../../../hooks/auth/useSessionManager';
+import { useNavigate } from 'react-router-dom';
 
 const UserMenu = ({
     user,
@@ -24,7 +25,12 @@ const UserMenu = ({
 }) => {
     const { t, i18n } = useTranslation();
     const [profileOpen, setProfileOpen] = useState(false);
-    const handleLogout = useLogout();
+    const { endSession } = useSessionManager();
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        endSession();
+        navigate('/login', { replace: true });
+    };
 
     return (
         <Box sx={{ ml: 2, display: 'flex', alignItems: 'center' }}>

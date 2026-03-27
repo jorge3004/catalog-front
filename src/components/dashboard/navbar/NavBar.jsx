@@ -9,7 +9,6 @@ import {
   MenuItem,
   Box,
 } from '@mui/material';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useAuth } from '../../../context/AuthProvider';
 
 import UserMenu from './userMenu/UserMenu';
@@ -37,10 +36,6 @@ const NavBar = ({ onMenuClick, onSearch, theme, toggleTheme, onAddClick }) => {
 
   const handleMenu = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
-  const handleProfile = () => {
-    setProfileOpen(true);
-    handleClose();
-  };
 
   return (
     <AppBar position="static" color="default" elevation={1}>

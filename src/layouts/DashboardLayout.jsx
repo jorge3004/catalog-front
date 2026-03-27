@@ -1,3 +1,4 @@
+import useLastRouteManager from '../hooks/userSession/useLastRouteSync';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation } from 'react-router-dom';
@@ -19,6 +20,8 @@ const DashboardLayout = ({ theme, toggleTheme }) => {
   const location = useLocation();
 
   const { t } = useTranslation();
+  // Hook para sincronizar last_route
+  useLastRouteManager();
   // Determinar título según la ruta, usando i18n
   let titleKey = 'navbar.catalog';
   if (location.pathname.startsWith('/dashboard/users')) {

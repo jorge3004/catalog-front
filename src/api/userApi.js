@@ -59,8 +59,8 @@ export async function deactivateUser({ userId, token }) {
     return data;
 }
 
-// Actualizar lastRoute del usuario autenticado
-export async function updateLastRoute({ userId, lastRoute, token }) {
+// Actualizar last_route del usuario autenticado
+export async function updateLastRoute({ userId, last_route, token }) {
     const API_URL = process.env.REACT_APP_API_URL || '/api';
     const res = await fetch(`${API_URL}/users/${userId}/last-route`, {
         method: 'PATCH',
@@ -68,11 +68,11 @@ export async function updateLastRoute({ userId, lastRoute, token }) {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ last_route: lastRoute }),
+        body: JSON.stringify({ last_route }),
     });
     if (!res.ok) {
         // No lanzar error, solo loguear
-        console.warn('No se pudo actualizar lastRoute en backend');
+        console.warn('No se pudo actualizar last_route en backend');
     }
 }
 

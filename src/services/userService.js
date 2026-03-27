@@ -9,6 +9,9 @@ const userService = {
     const data = await apiService.login({ username, password });
     if (data.token) {
       localStorage.setItem(TOKEN_KEY, data.token);
+      if (data.user) {
+        localStorage.setItem('user', JSON.stringify(data.user));
+      }
       return data;
     } else {
       throw new Error(data.message || 'Login fallido');

@@ -12,12 +12,13 @@ export function clearLocalStorageExcept(keysToKeep = []) {
     });
 }
 
+// NOTA: Para centralizar el manejo de lastRoute, usa el hook useLastRouteManager en componentes/hook, no aquí directamente.
 export function setUserLocalStorage(user) {
     if (!user) return;
-    localStorage.setItem('user', JSON.stringify(user));
-    if (user.lastRoute) {
-        localStorage.setItem('lastRoute', user.lastRoute);
-    }
+    // Eliminar last_route antes de guardar el user en localStorage para evitar confusión
+    const { last_route, ...userWithoutLastRoute } = user;
+    localStorage.setItem('user', JSON.stringify(userWithoutLastRoute));
+    // No actualizar last_route aquí. Toda la gestión de last_route debe ser centralizada en useLastRouteManager.
     if (user.language) {
         localStorage.setItem('lang', user.language);
     }

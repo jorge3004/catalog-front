@@ -1,19 +1,18 @@
-
 import React from 'react';
 import AppRoutes from './routes/AppRoutes';
 import { useAuth } from './context/AuthProvider';
 import { CircularProgress, Box, Alert, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import useAuthRedirect from './hooks/auth/useAuthRedirect';
 
 
 const CONNECTION_ERROR_KEY = 'app.connectionError';
 
-import useLastRouteSync from './hooks/userSession/useLastRouteSync';
 
 const AppWithAuthLoader = ({ theme, toggleTheme }) => {
     const { loading, apiError, apiErrorMsg } = useAuth();
     const { t, i18n } = useTranslation();
-    useLastRouteSync();
+    const redirect = useAuthRedirect();
 
     // Detect if the error is the connection error and translate if needed
     let displayErrorMsg = apiErrorMsg;
@@ -40,6 +39,7 @@ const AppWithAuthLoader = ({ theme, toggleTheme }) => {
             </Box>
         );
     }
+    if (redirect) return redirect;
     return <AppRoutes theme={theme} toggleTheme={toggleTheme} />;
 };
 
